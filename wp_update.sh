@@ -38,10 +38,10 @@ echo $update > update-$(date +%s).log
 
 echo $update | jq --raw-output 'map([.name, .version])[] | @tsv' |  while IFS=$'\t' read name version; do
   # Backup current plugin version
-  # if [ ! -f $storage/$name\_$version.tar.gz ]; then
-  #   tar czf $storage/$name\_$version.tar.gz ./wp-content/plugins/$name
-  # fi
+  if [ ! -f $storage/$name\_$version.tar.gz ]; then
+    tar czf $storage/$name\_$version.tar.gz $path/wp-content/plugins/$name
+  fi
 
   # Update plugin
-  wp plugin update $name --allow-root --paht=$path
+  wp plugin update $name --allow-root --path=$path
 done
